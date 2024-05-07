@@ -1,0 +1,9 @@
+src
+node_modules
+yarn.lock
+package.json
+tailwind.config.js
+gulpfile.babel.js
+.eslintrc
+.stylelintrc
+.prettierrc

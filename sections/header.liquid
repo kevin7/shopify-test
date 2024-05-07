@@ -1,0 +1,89 @@
+<div class="c-header fixed top-0 left-0 w-full bg-secondary h-7">
+    <div class="container screen-lg">
+        <div class="flex w-full justify-between items-center relative">
+            <div class="font-bold uppercase">{{ section.settings.shop_title }}</div>
+            <div class="flex justify-between items-center">
+                <nav x-data="{open: false}">
+                    <ul class="flex gap-x-3 hidden lg:visible">
+                    {% for link in linklists.main-menu.links %}
+                        {% if link.links != blank %}
+                            <li class="relative m-0 group">
+                                <a x-on:click="open = ! open" class="no-underline font-medium py-2 px-2 flex items-center">{{ link.title }} {% render 'icon-chevron' %}</a>
+                                <ul x-show="open" @click.away="open = false" class="absolute top-[100%] left-0 bg-secondary-mid w-[200px] transition-all">
+                                    {% for sublink in link.links %}
+                                        <li><a href="{{ sublink.url }}"  class="no-underline px-2 py-1 block">{{ sublink.title }}</a></li>
+                                    {% endfor %}
+                                </ul>  
+                            </li>
+                        {% else %}
+                            <li><a href="{{ link.url }}" class="no-underline font-medium py-2 px-2 block">{{ link.title }}</a></li>
+                        {% endif %}
+
+                    {% endfor %}
+                    </ul>
+                </nav>
+
+                <div class="flex">
+                    <a href="{{ routes.cart_url }}" class="no-underline font-medium py-2 px-2 inline-block">{% render 'icon-cart' %}</a>
+
+                    {% if shop.customer_accounts_enabled %}
+                        <a href="{{ routes.account_login_url }}" class="no-underline font-medium py-2 px-2 hidden lg:inline-block ">Login</a>
+                        <a href="{{ routes.account_register_url }}" class="no-underline font-medium py-2 px-2 hidden lg:inline-block">Register</a>
+                    {% endif %}
+
+                    <button class="border-0 p-0 bg-transparent js-menu-toggle">
+                        <span class="inline-block">{% render 'icon-menu' %}</span>
+                        <span class="hidden">{% render 'icon-close' %}</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="c-mobile-nav absolute top-[100%] left-0 bg-white shadow-lg w-full hidden">
+                <nav>
+                    <ul class="gap-2">
+                    {% for link in linklists.main-menu.links %}
+                        {% if link.links != blank %}
+                            <li class="relative m-0 group menu-has-child group">
+                                <a class="no-underline font-medium py-2 px-2 flex items-center cursor-pointer">{{ link.title }} {% render 'icon-chevron' %}</a>
+                                <ul class="pl-2 transition-all hidden group-[.active]:block">
+                                    {% for sublink in link.links %}
+                                        <li><a href="{{ sublink.url }}"  class="no-underline px-2 py-1 block">{{ sublink.title }}</a></li>
+                                    {% endfor %}
+                                </ul>  
+                            </li>
+                        {% else %}
+                            <li><a href="{{ link.url }}" class="no-underline font-medium py-2 px-2 block">{{ link.title }}</a></li>
+                        {% endif %}
+
+                    {% endfor %}
+                    </ul>
+                </nav>
+
+                {% if shop.customer_accounts_enabled %}
+                <div class="block">
+                    <a href="{{ routes.account_login_url }}" class="no-underline font-medium py-2 px-2 block">Login</a>
+                    <a href="{{ routes.account_register_url }}" class="no-underline font-medium py-2 px-2 block">Register</a>
+                </div>
+                {% endif %}
+                
+            </div>
+
+        </div>   
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Header",
+        "settings": [
+            {
+                "type": "text",
+                "id": "shop_title",
+                "label": "Title",
+                "default": "Test",
+                "info": "This is home title"
+            }
+        ]
+    }
+{% endschema %}
